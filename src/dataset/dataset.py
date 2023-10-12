@@ -75,6 +75,7 @@ class Dataset(torch.utils.data.Dataset):
         file_path = os.path.normpath(os.path.join(config.data_dir, f"{partition}.json"))
         logger.info(f"Loading data file: {file_path}")
         self._text, self._lbs = load_data_from_json(file_path)
+
         logger.info("Encoding sequences...")
         self.encode(config.bert_model_name_or_path, {lb: idx for idx, lb in enumerate(config.bio_label_types)})
 
@@ -94,13 +95,9 @@ class Dataset(torch.utils.data.Dataset):
         Parameters
         ----------
         tokenizer_name: str
-            the name of the assigned Huggingface tokenizer, "distilbert-base-uncased"
+            the name of the assigned Huggingface tokenizer
         lb2idx: dict
             a dictionary that maps the str labels to indices
-            {'O': 0, 'B-PER': 1, 'I-PER': 2, 'B-LOC': 3, 'I-LOC': 4, 'B-ORG': 5, 'I-ORG': 6, 'B-MISC': 7, 'I-MISC': 8}
-
-['Christie', 'belongs', 'to', 'them', '.'] ['B-PER', 'O', 'O', 'O', 'O'] ['[CLS]', 'christie', 'belongs', 'to', 'them', '.', '[SEP]'] [101, 13144, 7460, 2000, 2068, 1012, 102]
-['--', 'Reuter', 'London', 'Newsroom', '+44', '171', '542', '7658'] ['O', 'B-ORG', 'I-ORG', 'I-ORG', 'O', 'O', 'O', 'O'] ['[CLS]', '-', '-', 're', '##uter', 'london', 'news', '##room', '+', '44', '171', '54', '##2', '76', '##58', '[SEP]'] [101, 1011, 1011, 2128, 19901, 2414, 2739, 9954, 1009, 4008, 18225, 5139, 2475, 6146, 27814, 102]
 
         Returns
         -------
@@ -108,6 +105,7 @@ class Dataset(torch.utils.data.Dataset):
         """
         tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, add_prefix_space=True)
         tokenized_text = tokenizer(self._text, add_special_tokens=True, is_split_into_words=True)
+
         self._token_ids = tokenized_text.input_ids
         self._attn_masks = tokenized_text.attention_mask
 
@@ -119,34 +117,7 @@ class Dataset(torch.utils.data.Dataset):
         # You should store the updated label sequence in the `bert_lbs_list` variable.
         # --- TODO: start of your code ---
 
-        for sent, sent_labels in zip(self._text, self._lbs):
-            # Using encode_plus to get the offsets
-            encoding = tokenizer.encode_plus(sent, is_split_into_words=True, add_special_tokens=True,
-                                             return_offsets_mapping=True)
-            offsets = encoding['offset_mapping']
-
-            bert_labels = []
-            label_idx = 0
-
-            for offset in offsets:
-                # [CLS] token or [SEP] token
-                if offset == (0, 0):
-                    bert_labels.append(MASKED_LB_ID)
-                # If it's not a subword
-                elif offset[0] == 0:
-                    bert_labels.append(lb2idx[sent_labels[label_idx]])
-                    label_idx += 1
-                else:
-                    bert_labels.append(MASKED_LB_ID)
-
-            bert_lbs_list.append(bert_labels)
-
         # --- TODO: end of your code ---
-
-        # printing for verification
-        # for i in range(3):
-        #     print(self._text[i], self._lbs[i], tokenized_text[i].tokens, self._token_ids[i], bert_lbs_list[i])
-        # exit()
 
         for tks, lbs in zip(self._token_ids, bert_lbs_list):
             assert len(tks) == len(lbs), ValueError(
