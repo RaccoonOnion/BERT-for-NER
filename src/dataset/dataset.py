@@ -77,7 +77,6 @@ class Dataset(torch.utils.data.Dataset):
         self._text, self._lbs = load_data_from_json(file_path)
         logger.info("Encoding sequences...")
         self.encode(config.bert_model_name_or_path, {lb: idx for idx, lb in enumerate(config.bio_label_types)})
-
         logger.info(f"Data loaded.")
 
         self.data_instances = pack_instances(
