@@ -3,8 +3,8 @@
 # Quit if there are any errors
 set -e
 
-name=""
-gtid=""
+name="Yunxiang_Yan"
+gtid="903941829"
 
 data_dir="./data"
 
