@@ -1,0 +1,40 @@
+10/12/2023 02:50:16 - INFO - src.args -   Configurations:
+{
+  "batch_size": 16,
+  "bert_model_name_or_path": "distilbert-base-uncased",
+  "bio_label_types": ["O", "B-PER", "I-PER", "B-LOC", "I-LOC", "B-ORG", "I-ORG", "B-MISC", "I-MISC"],
+  "data_dir": "./data",
+  "device": "cpu",
+  "entity_types": ["PER", "LOC", "ORG", "MISC"],
+  "gtid": "903941829",
+  "log_path": "log/record.log",
+  "lr": 5e-05,
+  "lr_scheduler_type": "linear",
+  "n_ents": 4,
+  "n_epochs": 20,
+  "n_lbs": 9,
+  "name": "Yunxiang_Yan",
+  "no_cuda": false,
+  "no_mps": false,
+  "seed": 42,
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01
+}
+10/12/2023 02:50:16 - INFO - __main__ -   name: Yunxiang_Yan
+10/12/2023 02:50:16 - INFO - __main__ -   GTID: 903941829
+10/12/2023 02:50:16 - INFO - __main__ -   Loading datasets...
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Loading data file: data/train.json
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Encoding sequences...
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Data loaded.
+10/12/2023 02:50:16 - INFO - __main__ -   Training dataset loaded, length=1000
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Loading data file: data/valid.json
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Encoding sequences...
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Data loaded.
+10/12/2023 02:50:16 - INFO - __main__ -   Validation dataset loaded, length=200
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Loading data file: data/test.json
+10/12/2023 02:50:16 - INFO - src.dataset.dataset -   Encoding sequences...
+10/12/2023 02:50:17 - INFO - src.dataset.dataset -   Data loaded.
+10/12/2023 02:50:17 - INFO - __main__ -   Test dataset loaded, length=200
+10/12/2023 02:50:18 - INFO - src.train -   Start training...
+10/12/2023 02:50:18 - INFO - src.train -   
+10/12/2023 02:50:18 - INFO - src.train -   Epoch 1 of 20
